@@ -6,6 +6,9 @@
         IMAGE_REPO = 'repo-spring-petclinic-rest'
         IMAGE_NAME = 'spring-petclinic-rest'
         IMAGE_TAG = '${GIT_COMMIT_SHORT}_${BUILD_NUMBER}'
+        REGISTRY_URL = 'http://3.37.58.236:8000'
+        REGISTRY_CREDENTIALS = 'harbor-docker-registry'
+        
     }
     stages {
         stage('Build') {
@@ -41,6 +44,16 @@
             steps {
                 script {
                     APP_IMAGE = docker.build("${IMAGE_REPO}/${IMAGE_NAME}:${IMAGE_TAG}")
+                }
+            }
+        }
+        stage('Push Docker image') {
+            steps {
+                script {
+                    docker.withRegistry(REGISTRY_URL, REGISTRY_CREDENTIALS) {
+                        APP_IMAGE.push()
+                        APP_IMAGE.push('latest')
+                    }
                 }
             }
         }
