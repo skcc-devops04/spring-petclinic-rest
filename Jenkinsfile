@@ -13,6 +13,7 @@
 		    post {
 		        always {
 		            junit 'target/surefire-reports/*.xml'
+            		step([ $class: 'JacocoPublisher' ])
 		        }
 		    }
 		}
