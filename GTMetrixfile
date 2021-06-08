@@ -25,7 +25,7 @@ pipeline {
 //                        def executingTimeMillis = sh(script: "echo '$response' | jq -r '.actions[] | select(._class == \"https://gtmetrix.com/api/2.0/tests\") | .executingTimeMillis'", returnStdout: true).trim()
 //
 //                        echo "executingTimeMillis = $executingTimeMillis"
-                    }
+//                    }
                 }
             }
         }
