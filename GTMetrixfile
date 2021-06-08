@@ -5,7 +5,7 @@ pipeline {
         stage("GTMetrix") {
             steps {
                 script {
-                    final String targetUrl = \"http://myspringpetclinicrest.herokuapp.com/petclinic/swagger-ui.html\"
+                    final String targetUrl = "http://myspringpetclinicrest.herokuapp.com/petclinic/swagger-ui.html"
                     final String curlScript = "curl -s -w '\\n%{response_code}' -u 5938b2c75abe663b3c887829face5016: -X POST -H Content-Type:application/vnd.api+json \"https://gtmetrix.com/api/2.0/tests\" -d '{\"data\": {\"type\": \"test\",\"attributes\": {\"url\":$targetUrl,\"location\":\"7\",\"browser\":\"3\",\"adblock\":1}}}'"
     
                     echo curlScript
