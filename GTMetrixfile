@@ -18,9 +18,7 @@ pipeline {
                     
                     
                     if (code == 202) {
-                        //def json = new groovy.json.JsonSlurperClassic().parseText(response)
-                        //def selfUrl = json.links.self
-                        //echo "selfUrl = $selfUrl"
+
                         def indexOfSlash=$response[2].indexOf("/")
                         echo ${$response[2].substring(indexOfSlash+1)}
                     }
