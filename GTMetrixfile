@@ -1,0 +1,71 @@
+pipeline {
+    agent any
+
+    stages {
+        stage("GTMetrix Test") {
+            steps {
+                script {
+                    final String targetUrl = "http://myspringpetclinicrest.herokuapp.com/petclinic/swagger-ui.html"
+                    final String user = "5938b2c75abe663b3c887829face5016:"
+
+                    // 1. Start a Test (https://gtmetrix.com/api/docs/2.0/#api-test-start)
+                    final String scriptStartTest = "curl -s -w '\\n%{response_code}' -u $user -X POST -H Content-Type:application/vnd.api+json \"https://gtmetrix.com/api/2.0/tests\" -d '{\"data\": {\"type\": \"test\",\"attributes\": {\"url\":\"" + targetUrl + "\",\"location\":\"7\",\"browser\":\"3\",\"adblock\":1,\"report\":\"lighthouse\"}}}'"
+                    echo "scriptStartTest : " + scriptStartTest
+    
+                    final def (String response1, int code1) = sh(script: scriptStartTest, returnStdout: true).trim().tokenize("\n")
+                    echo "HTTP response1 status code: $code1"
+
+                    // response1 sample
+                    // def response1 = '{"data":{"id":"umSdVyUm","type":"test","attributes":{"source":"api","created":1623168593,"location":"7","browser":"3","state":"queued"}},"meta":{"credits_left":79.1,"credits_used":1},"links":{"self":"https://gtmetrix.com/api/2.0/tests/umSdVyUm"}}'
+                    echo "response1\n$response1"
+                    
+                    if (code1 == 202) {
+                        // Split으로 처리할 경우
+                        def test_id = response1[15..22]
+                        //def json1 = jsonParse(response1)
+                        //def test_id = json1.data.id
+                        // test_id : umSdVyUm
+                        echo "test_id\n$test_id"
+
+                        // 사이트 분석하는 시간을 기다린다
+                        sleep 60
+                        
+                        // 2. Get a test (https://gtmetrix.com/api/docs/2.0/#api-test-by-id)
+                        // 시작된 테스트의 현재 상태를 확인. 권장되는 폴링 간격은 3초.
+                        // 테스트는 24 시간 동안만 유지.
+                        final String scriptGetTest = "curl -s -w '\\n%{response_code}' -u $user -X GET \"https://gtmetrix.com/api/2.0/tests/$test_id\""
+                        final def (String response2, int code2) = sh(script: scriptGetTest, returnStdout: true).trim().tokenize("\n")
+                        echo "HTTP response2 status code: $code2"
+                        echo "response2\n$response2"
+                        // response2 sample
+                        // def response2 = '{"data":{"id":"DLQm8Mn5","type":"test","attributes":{"source":"api","created":1623248196,"location":"7","browser":"3","started":1623248197,"finished":1623248245,"state":"completed"},"links":{"report":"https://gtmetrix.com/api/2.0/reports/liWph7Rt"}}}'
+
+                        sleep 3
+
+                        // 3. Get a report (https://gtmetrix.com/api/docs/2.0/#api-report-by-id)
+                        // 보고서 데이터를 검색한다. 보고서는 완료된 테스트의 결과이고, 페이지 로드 정보를 포함한다.
+                        // GTMetrix 보고서는 1 개월 동안 보관됨.
+                        
+                        def report_slug = response2[-12..-5]
+                        echo "report_slug\n$report_slug"
+                        
+                        final String scriptGetReport = "curl -s -w '\\n%{response_code}' -u $user -X GET \"https://gtmetrix.com/api/2.0/reports/$report_slug\""
+                        final def (String response3, int code3) = sh(script: scriptGetReport, returnStdout: true).trim().tokenize("\n")
+                        echo "HTTP response3 status code: $code3"
+                        echo "response3\n$response3"
+                        // response3 sample
+                        // def response3 = '{"data":{"id":"0BVidV2U","type":"report","attributes":{"structure_score":76,"source":"api","speed_index":4738,"onload_time":2611,"browser":"3","redirect_duration":0,"first_paint_time":1445,"dom_content_loaded_duration":0,"dom_content_loaded_time":2568,"dom_interactive_time":2568,"page_requests":18,"page_bytes":2239678,"gtmetrix_grade":"F","location":"7","html_bytes":3318,"first_contentful_paint":3819,"performance_score":29,"fully_loaded_time":5346,"total_blocking_time":309,"largest_contentful_paint":5062,"time_to_interactive":4994,"time_to_first_byte":479,"rum_speed_index":1445,"backend_duration":220,"onload_duration":24,"cumulative_layout_shift":0.0182699,"connect_duration":259},"links":{"optimized_images":"https://gtmetrix.com/api/2.0/reports/0BVidV2U/resources/optimized-images.tar","report_pdf":"https://gtmetrix.com/api/2.0/reports/0BVidV2U/resources/report.pdf","har":"https://gtmetrix.com/api/2.0/reports/0BVidV2U/resources/net.har","lighthouse":"https://gtmetrix.com/api/2.0/reports/0BVidV2U/resources/lighthouse.json","report_url":"https://gtmetrix.com/reports/myspringpetclinicrest.herokuapp.com/0BVidV2U/","screenshot":"https://gtmetrix.com/api/2.0/reports/0BVidV2U/resources/screenshot.jpg"}}}'
+
+                        // Split으로 처리할 경우
+                        def report_url = response3[-164..-92]
+                        //def json3 = jsonParse(response3) 
+                        //def report_url = json3.data.links.report_url
+                        echo "report_url\n$report_url"
+                        // report_url sample
+                        // https://gtmetrix.com/reports/myspringpetclinicrest.herokuapp.com/ufkjXshR
+                    }
+                }
+            }
+        }
+    }
+}
