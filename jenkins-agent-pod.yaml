@@ -27,6 +27,11 @@ spec:
   serviceAccountName: petclinic-sa
   securityContext:
     runAsUser: 0
+  ports:
+    - name: http-port
+      containerPort: 9966
+    - name: jnlp-port
+      containerPort: 50000
   volumes:
     - name: docker-sock
       hostPath:
