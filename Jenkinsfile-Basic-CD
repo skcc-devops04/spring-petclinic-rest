@@ -19,7 +19,7 @@ pipeline {
     stage('Package') {
       steps {
         container('maven') {
-          sh 'mvn clean package -DskipTests'
+          sh 'mvn package -DskipTests'
           archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
         }
       }
