@@ -239,27 +239,6 @@
                     </to>
                 </configuration>
             </plugin>
-
-		    <plugin>
-		      <groupId>io.snyk</groupId>
-		      <artifactId>snyk-maven-plugin</artifactId>
-		      <version>2.0.0</version>
-		      <inherited>false</inherited>
-		      <executions>
-		        <execution>
-		          <id>snyk-test</id>
-		          <goals>
-		            <goal>test</goal>
-		          </goals>
-		        </execution>
-		      </executions>
-		      <configuration>
-		        <apiToken>4701d606-c2a8-42e3-bad4-0d98ee7a0a64</apiToken>
-		        <args>
-		          <arg>--all-projects</arg>
-		        </args>
-		      </configuration>
-		    </plugin>
         </plugins>
     </build>
 
