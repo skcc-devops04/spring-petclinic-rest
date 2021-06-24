@@ -56,7 +56,7 @@ pipeline {
            git config --global credential.helper cache
            git config --global push.default simple
            """
-        git url: 'https://github.com/skcc-devops04/petclinic-argocd-helm.git',
+        git url: 'https://skcc.devops04:@github.com/skcc-devops04/petclinic-argocd-helm.git',
             credentialsId: 'skcc.devops04',
             branch: 'main'
         sh """
