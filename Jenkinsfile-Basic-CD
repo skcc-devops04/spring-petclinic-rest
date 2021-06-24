@@ -65,8 +65,8 @@ pipeline {
            git commit -m 'Update Docker image tag: ${IMAGE_TAG}'
            git push origin main
            """
+      }
     }
-  }
 
 //    stage( 'Deploy to Cluster' ) {
 //      steps {
