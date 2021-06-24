@@ -48,7 +48,6 @@ pipeline {
       }
     }
 
-//git url: 'https://skcc-devops04:!Devops04@github.com/skcc-devops04/petclinic-argocd-helm.git',
  	  stage('Update manifest') {
       steps {
         sh """
