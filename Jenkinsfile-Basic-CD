@@ -74,8 +74,8 @@ pipeline {
       steps {
         container('newman') {
           sh """
-            newman run api_test.json \
-                  --env-var 'host_url=${APP_URL}/petclinic/' --env-var 'port=${APP_PORT}' \
+            newman run ./api_test.json \
+                  --env-var 'host_url=${APP_URL}/petclinic' --env-var 'port=${APP_PORT}' \
                   --reporters cli,junit \
                   --reporter-junit-export 'target/newman/petclinic-report.xml'
           """
