@@ -19,13 +19,7 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test('Body에 cat이 포함되어 있는지 테스트', function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"    pm.response.to.be.ok;\r",
-											"    pm.expect(pm.response.text()).to.include('cat');\r",
-											"});\r",
-											"\r",
-											"console.log('request : ' + pm.response.text());"
+
 										],
 										"type": "text/javascript"
 									}
@@ -72,7 +66,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "[\n {\n  \"id\": 27537551,\n  \"name\": \"in ex id esse\"\n },\n {\n  \"id\": 59374449,\n  \"name\": \"non ex\"\n }\n]"
+									"body": ""
 								},
 								{
 									"name": "Unauthorized",
@@ -167,14 +161,7 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"const res = pm.response.json();\r",
-											"\r",
-											"console.log('addPetType 결과 id : ' + res.id);\r",
-											"console.log('addPetType 결과 name : ' + res.name);\r",
-											"\r",
-											"pm.globals.set('petTypeId', parseInt(res.id));\r",
-											"\r",
-											"console.log('환경변수 설정된 petTypeId : ' + pm.globals.get('petTypeId'));"
+
 										],
 										"type": "text/javascript"
 									}
@@ -190,7 +177,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"elephant\"\n}"
+									"raw": ""
 								},
 								"url": {
 									"raw": "{{baseUrl}}/api/pettypes",
@@ -230,7 +217,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n \"id\": -55155222,\n \"name\": \"fugiat ut incididunt\"\n}"
+									"body": "{}"
 								},
 								{
 									"name": "Created",
