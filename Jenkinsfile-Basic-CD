@@ -75,7 +75,7 @@ pipeline {
         container('newman') {
           sh """
             git url: 'https://github.com/skcc-devops04/spring-petclinic-rest.git', credentialsId: 'skcc.devops04', branch: 'main'
-            newman run ./api_test.json \
+            newman run api_test.json \
                   --env-var 'host_url=${APP_URL}/petclinic' --env-var 'port=${APP_PORT}' \
                   --reporters cli,junit \
                   --reporter-junit-export 'target/newman/petclinic-report.xml'
@@ -84,7 +84,7 @@ pipeline {
       }
       post {
         always {
-          junit 'target/newman/*.xml'
+          junit 'allowEmptyResults: true, testResults: "target/newman/*.xml"'
         }
       }
     }
