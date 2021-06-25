@@ -1127,7 +1127,7 @@
 	"variable": [
 		{
 			"key": "baseUrl",
-			"value": "{{APP_URL}}/petclinic"
+			"value": "{{APP_URL}}"
 		},
 		{
 			"key": "petTypeId",
