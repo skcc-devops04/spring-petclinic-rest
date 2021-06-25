@@ -78,7 +78,7 @@ pipeline {
             newman run ${WORKSPACE}/api_test.json \
                   --env-var 'host_url=${APP_URL}/petclinic' --env-var 'port=${APP_PORT}' \
                   --reporters cli,junit \
-                  --reporter-junit-export 'target/newman/petclinic-report.xml'
+                  --reporter-junit-export '${WORKSPACE}/target/newman/petclinic-report.xml'
           """
         }
       }
