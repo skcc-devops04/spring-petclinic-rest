@@ -78,13 +78,13 @@ pipeline {
             newman run https://www.getpostman.com/collections/d0e925037b1816d118dc \
                   --env-var 'host_url=${APP_URL}/petclinic' --env-var 'port=${APP_PORT}' \
                   --reporters cli,junit \
-                  --reporter-junit-export '${WORKSPACE}/target/newman/petclinic-report.xml'
+                  --reporter-junit-export 'target/newman/petclinic-report.xml'
           """
         }
       }
       post {
         always {
-          junit 'allowEmptyResults: true, testResults: "${WORKSPACE}/target/newman/*.xml"'
+          junit 'allowEmptyResults: true, testResults: "target/newman/*.xml"'
         }
       }
     }
