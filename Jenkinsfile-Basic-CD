@@ -41,24 +41,25 @@ pipeline {
      }
    }
 
-   stage('Static Code Analysis') {
+   stage('Static Code Analysis & Package') {
      steps {
        configFileProvider([configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')]) {
          container('maven') {
-           sh 'mvn sonar:sonar -s $MAVEN_SETTINGS'
+           sh 'mvn package sonar:sonar -DskipTests -s $MAVEN_SETTINGS'
+           archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
          }
        }
      }
    }
 
-    stage('Package') {
-      steps {
-        container('maven') {
-          sh 'mvn package -DskipTests'
-          archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-        }
-      }
-    }
+//    stage('Package') {
+//      steps {
+//        container('maven') {
+//          sh 'mvn package -DskipTests'
+//          archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+//        }
+//      }
+//    }
     
     stage('Build Docker image') {
       steps {
