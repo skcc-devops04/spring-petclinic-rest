@@ -74,7 +74,7 @@ pipeline {
       steps {
         container('newman') {
           sh """
-            git url: 'https://github.com/skcc-devops04/petclinic-argocd-helm.git', credentialsId: 'skcc.devops04', branch: 'main'
+            git url: 'https://github.com/skcc-devops04/spring-petclinic-rest.git', credentialsId: 'skcc.devops04', branch: 'main'
             newman run ./api_test.json \
                   --env-var 'host_url=${APP_URL}/petclinic' --env-var 'port=${APP_PORT}' \
                   --reporters cli,junit \
