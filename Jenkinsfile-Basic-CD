@@ -56,8 +56,8 @@ pipeline {
            git config --global credential.helper cache
            git config --global push.default simple
            """
-        git url: 'https://skcc-devops04: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@github.com/skcc-devops04/petclinic-argocd-helm.git',
-            //credentialsId: 'skcc.devops04',
+        git url: 'https://github.com/skcc-devops04/petclinic-argocd-helm.git',
+            credentialsId: 'skcc.devops04',
             branch: 'main'
         sh """
            sed -i 's/tag:.*/tag: ${IMAGE_TAG}/g' values.yaml
