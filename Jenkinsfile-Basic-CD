@@ -13,6 +13,8 @@ pipeline {
     IMAGE_REPO = 'repo-spring-petclinic-rest'
     IMAGE_NAME = 'spring-petclinic-rest'
     IMAGE_TAG = sh(returnStdout: true, script: '(git rev-parse --short HEAD && echo "_$BUILD_NUMBER") | tr -d "\n"').trim()
+    APP_URL = 'a0c861d17c59b414c8f5302355144b84-d01559613ddf2c4c.elb.ap-northeast-2.amazonaws.com'
+    APP_PORT = 80
   }
 
   stages {
@@ -24,6 +26,7 @@ pipeline {
         }
       }
     }
+    
     stage('Build Docker image') {
       steps {
         container('docker') {
@@ -33,6 +36,7 @@ pipeline {
         }
       }
     }
+
     stage('Push Docker image') {
       steps {
         container('docker') {
@@ -45,6 +49,45 @@ pipeline {
         }
       }
     }
+
+    stage('Update manifest') {
+      steps {
+        sh """
+           git config --global user.name 'skcc-devops04'
+           git config --global user.email 'skcc.devops04@sk.com'
+           git config --global credential.helper cache
+           git config --global push.default simple
+           """
+        git url: 'https://github.com/skcc-devops04/petclinic-argocd-helm.git',
+            credentialsId: 'skcc.devops04',
+            branch: 'main'
+        sh """
+           sed -i 's/tag:.*/tag: ${IMAGE_TAG}/g' values.yaml
+           git add values.yaml
+           git commit -m 'Update Docker image tag: ${IMAGE_TAG}'
+           git push origin main
+           """
+      }
+    }
+
+    stage('API Test') {
+      steps {
+        container('newman') {
+          sh """
+            newman run https://www.getpostman.com/collections/d0e925037b1816d118dc \
+                  --env-var 'host_url=${APP_URL}/petclinic/' --env-var 'port=${APP_PORT}' \
+                  --reporters cli,junit \
+                  --reporter-junit-export 'target/newman/petclinic-report.xml'
+          """
+        }
+      }
+      post {
+        always {
+          junit 'target/newman/*.xml'
+        }
+      }
+    }
+
 //    stage( 'Deploy to Cluster' ) {
 //      steps {
 //        script {
@@ -58,7 +101,5 @@ pipeline {
 //        }*/
 //      }
 
-
-    }
   }
 }
