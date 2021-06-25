@@ -75,7 +75,7 @@ pipeline {
         container('newman') {
           git url: 'https://github.com/skcc-devops04/spring-petclinic-rest.git', credentialsId: 'skcc.devops04', branch: 'main'
           sh """
-            newman run https://github.com/skcc-devops04/spring-petclinic-rest/blob/master/api_test.json \
+            newman run https://www.getpostman.com/collections/d0e925037b1816d118dc \
                   --env-var 'host_url=${APP_URL}/petclinic' --env-var 'port=${APP_PORT}' \
                   --reporters cli,junit \
                   --reporter-junit-export '${WORKSPACE}/target/newman/petclinic-report.xml'
