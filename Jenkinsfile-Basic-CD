@@ -121,25 +121,25 @@ pipeline {
                   --reporter-junit-export 'target/newman_petclinic_junit.xml'
                   --reporter-html-export 'target/newman_petclinic_html.html'
           """
-          sh """
-            newman run api_test.json \
-                  --env-var 'baseUrl=${APP_URL}' --env-var 'petTypeId=""' \
-                  -r htmlextra 
-          """
+//          sh """
+//            newman run api_test.json \
+//                  --env-var 'baseUrl=${APP_URL}' --env-var 'petTypeId=""' \
+//                  -r htmlextra 
+//          """
         }
       }
-      post {
-        always {
-          junit allowEmptyResults: true, skipPublishingChecks: true, testResults: 'target/newman_petclinic_junit.xml'
-          publishHTML (target: [allowMissing: false,
-                                alwaysLinkToLastBuild: true,
-                                keepAll: true,
-                                reportDir: 'target',
-                                reportFiles: 'REST Petclinic backend Api *.html',
-                                reportName: 'NewmanReports',
-                                reportTitles: 'NewmanReports'])
-        }
-      }
+//      post {
+//        always {
+//          junit allowEmptyResults: true, skipPublishingChecks: true, testResults: 'target/newman_petclinic_junit.xml'
+//          publishHTML (target: [allowMissing: false,
+//                                alwaysLinkToLastBuild: true,
+//                                keepAll: true,
+//                                reportDir: 'target',
+//                                reportFiles: 'REST Petclinic backend Api *.html',
+//                                reportName: 'NewmanReports',
+//                                reportTitles: 'NewmanReports'])
+//        }
+//      }
     }
 
 //    stage( 'Deploy to Cluster' ) {
