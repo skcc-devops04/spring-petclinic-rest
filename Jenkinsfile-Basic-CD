@@ -113,13 +113,26 @@ pipeline {
             newman run api_test.json \
                   --env-var 'baseUrl=${APP_URL}' --env-var 'petTypeId=""' \
                   --reporters cli,junit \
-                  --reporter-junit-export 'petclinic-report.xml'
+                  --reporter-junit-export '${WORKSPACE}/target/newman_petclinic_junit.xml'
+                  --reporter-html-export '${WORKSPACE}/target/newman_petclinic_html.html'
+          """
+          sh """
+            newman run api_test.json \
+                  --env-var 'baseUrl=${APP_URL}' --env-var 'petTypeId=""' \
+                  --reporters htmlextra \
           """
         }
       }
       post {
         always {
-          junit 'petclinic-report.xml'
+          junit allowEmptyResults: true, skipPublishingChecks: true, testResults: '${WORKSPACE}/target/newman_petclinic_junit.xml'
+          publishHTML (target: [allowMissing: false,
+                                alwaysLinkToLastBuild: true,
+                                keepAll: true,
+                                reportDir: 'newman'
+                                reportFiles: 'REST Petclinic backend Api *.html',
+                                reportName: 'NewmanReports',
+                                reportTitles: 'NewmanReports'])
         }
       }
     }
