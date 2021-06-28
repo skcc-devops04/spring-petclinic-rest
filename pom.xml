@@ -172,6 +172,11 @@
                                 <java.source>${maven.compiler.source}</java.source>
                                 <java.target>${maven.compiler.target}</java.target>
                             </additionalProperties>
+                            
+                            <target>
+				                <copy file="./Scouter/scouter.agent.jar" tofile="./target/scouter.agent.jar"/>
+				                <copy file="./Scouter/scouter.conf" tofile="./target/scouter.conf"/>
+				            </target>
                         </configuration>
                     </execution>
                 </executions>
