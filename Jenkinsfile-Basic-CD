@@ -119,7 +119,7 @@ pipeline {
           sh """
             newman run api_test.json \
                   --env-var 'baseUrl=${APP_URL}' --env-var 'petTypeId=""' \
-                  --reporters htmlextra \
+                  --reporters htmlextra 
           """
         }
       }
@@ -129,7 +129,7 @@ pipeline {
           publishHTML (target: [allowMissing: false,
                                 alwaysLinkToLastBuild: true,
                                 keepAll: true,
-                                reportDir: '/var/jenkins_home/jobs/Petclinic-Basic-CD-Pipeline/builds/87/htmlreports/NewmanReports',
+                                reportDir: '${WORKSPACE}/target',
                                 reportFiles: 'REST Petclinic backend Api *.html',
                                 reportName: 'NewmanReports',
                                 reportTitles: 'NewmanReports'])
