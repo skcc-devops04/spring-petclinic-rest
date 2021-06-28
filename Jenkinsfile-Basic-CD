@@ -129,7 +129,7 @@ pipeline {
           publishHTML (target: [allowMissing: false,
                                 alwaysLinkToLastBuild: true,
                                 keepAll: true,
-                                reportDir: 'newman'
+                                reportDir: 'newman',
                                 reportFiles: 'REST Petclinic backend Api *.html',
                                 reportName: 'NewmanReports',
                                 reportTitles: 'NewmanReports'])
