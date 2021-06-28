@@ -110,6 +110,11 @@ pipeline {
         container('newman') {
           git url: 'https://github.com/skcc-devops04/spring-petclinic-rest.git', credentialsId: 'skcc.devops04', branch: 'master'
           sh """
+            newman install -g newman
+            newman install -g newman-reporter-html
+            newman install -g newman-reporter-htmlextra
+          """
+          sh """
             newman run api_test.json \
                   --env-var 'baseUrl=${APP_URL}' --env-var 'petTypeId=""' \
                   --reporters cli,junit,html \
