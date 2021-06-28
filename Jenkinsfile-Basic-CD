@@ -124,7 +124,7 @@ pipeline {
           sh """
             newman run api_test.json \
                   --env-var 'baseUrl=${APP_URL}' --env-var 'petTypeId=""' \
-                  --reporters htmlextra 
+                  -r htmlextra 
           """
         }
       }
