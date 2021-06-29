@@ -13,7 +13,7 @@ pipeline {
     IMAGE_REPO = 'repo-spring-petclinic-rest'
     IMAGE_NAME = 'spring-petclinic-rest'
     IMAGE_TAG = sh(returnStdout: true, script: '(git rev-parse --short HEAD && echo "_$BUILD_NUMBER") | tr -d "\n"').trim()
-    APP_URL = 'http://a0c861d17c59b414c8f5302355144b84-d01559613ddf2c4c.elb.ap-northeast-2.amazonaws.com/petclinic'
+    APP_URL = 'http://a0c861d17c59b414c8f5302355144b84-d01559613ddf2c4c.elb.ap-northeast-2.amazonaws.com'
     APP_PORT = 80
   }
 
@@ -109,38 +109,47 @@ pipeline {
       steps {
         container('newman') {
           git url: 'https://github.com/skcc-devops04/spring-petclinic-rest.git', credentialsId: 'skcc.devops04', branch: 'master'
+
           sh """
             npm install -g newman
             npm install -g newman-reporter-html
             npm install -g newman-reporter-htmlextra
           """
           sh """
-            newman run api_test.json \
-                  --env-var 'baseUrl=${APP_URL}' --env-var 'petTypeId=""' \
-                  --reporters cli,junit,html \
-                  --reporter-junit-export 'target/newman_petclinic_junit.xml'
-                  --reporter-html-export 'target/newman_petclinic_html.html'
+            newman run api_test2.json \
+                   --reporters cli,junit,html \
+                   --env-var 'baseUrl=${APP_URL}/petclinic' --env-var 'petTypeId=""' \
+                   --reporter-junit-export 'target/newman_petclinic_junit.xml' \
+                   --reporter-html-export 'target/newman_petclinic_html.html'
           """
-//          sh """
-//            newman run api_test.json \
-//                  --env-var 'baseUrl=${APP_URL}' --env-var 'petTypeId=""' \
-//                  -r htmlextra 
-//          """
+          sh """
+            newman run api_test2.json \
+                   --reporters htmlextra \
+                   --env-var 'baseUrl=${APP_URL}/petclinic' --env-var 'petTypeId=""'
+          """
         }
       }
-//      post {
-//        always {
-//          junit allowEmptyResults: true, skipPublishingChecks: true, testResults: 'target/newman_petclinic_junit.xml'
-//          publishHTML (target: [allowMissing: false,
-//                                alwaysLinkToLastBuild: true,
-//                                keepAll: true,
-//                                reportDir: 'target',
-//                                reportFiles: 'REST Petclinic backend Api *.html',
-//                                reportName: 'NewmanReports',
-//                                reportTitles: 'NewmanReports'])
-//        }
-//      }
+      post {
+        always {
+          junit allowEmptyResults: true, skipPublishingChecks: true, testResults: 'target/newman_petclinic_junit.xml'
+          publishHTML (target: [allowMissing: false,
+                                alwaysLinkToLastBuild: true,
+                                keepAll: true,
+                                reportDir: 'target',
+                                reportFiles: 'REST Petclinic backend Api*.html',
+                                reportName: 'NewmanReports',
+                                reportTitles: 'NewmanReports'])
+        }
+      }
     }
+
+    stage('Reporting w/ JaCoCo') {
+        steps {
+            junit "allowEmptyResults: true, testResults: target/TEST-*.xml"
+            jacoco execPattern: "target/jacoco.exec"
+        }
+    }
+
 
 //    stage( 'Deploy to Cluster' ) {
 //      steps {
@@ -154,7 +163,6 @@ pipeline {
 //          sh 'kubectl wait --for=condition=ready --timeout=60s pods -l app=hello-world'
 //        }*/
 //      }
-
 
   }
 }
