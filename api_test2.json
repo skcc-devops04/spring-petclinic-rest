@@ -36,7 +36,13 @@
 									],
 									"request": {
 										"method": "GET",
-										"header": [],
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
 										"url": {
 											"raw": "{{baseUrl}}/api/pettypes",
 											"host": [
@@ -193,7 +199,12 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"name\": \"elephant\"\n}"
+											"raw": "{\n    \"name\": \"elephant\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
 										},
 										"url": {
 											"raw": "{{baseUrl}}/api/pettypes",
@@ -379,7 +390,13 @@
 									],
 									"request": {
 										"method": "GET",
-										"header": [],
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
 										"url": {
 											"raw": "{{baseUrl}}/api/pettypes/:petTypeId",
 											"host": [
@@ -549,7 +566,12 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"id\": {{petTypeId}},\n    \"name\": \"dumbo\"\n}"
+											"raw": "{\n    \"id\": {{petTypeId}},\n    \"name\": \"dumbo\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
 										},
 										"url": {
 											"raw": "{{baseUrl}}/api/pettypes/{{petTypeId}}",
@@ -766,7 +788,13 @@
 									],
 									"request": {
 										"method": "GET",
-										"header": [],
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
 										"url": {
 											"raw": "{{baseUrl}}/api/pettypes/:petTypeId",
 											"host": [
@@ -939,7 +967,13 @@
 									],
 									"request": {
 										"method": "DELETE",
-										"header": [],
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
 										"url": {
 											"raw": "{{baseUrl}}/api/pettypes/:petTypeId",
 											"host": [
