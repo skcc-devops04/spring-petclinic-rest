@@ -21,8 +21,10 @@ pipeline {
   stages {
      stage('PerforfmanceTest') {
        steps {
-         container('jmeter') {
-           //git url: 'https://github.com/skcc-devops04/spring-petclinic-rest.git', credentialsId: 'skcc.devops04', branch: 'master'
+         //git url: 'https://github.com/skcc-devops04/spring-petclinic-rest.git', credentialsId: 'skcc.devops04', branch: 'master'
+         withCredentials([usernamePassword(credentialsId: 'skcc-devops04-github', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PWD')]) {
+                  container('jmeter') {
+           //
            // git checkout origin/master
          sh """
           git remote set-url --add origin https://github.com/skcc-devops04/spring-petclinic-rest.git
@@ -39,10 +41,11 @@ pipeline {
          -e -o PerformanceTest/TestResult/Result_html_${BUILD_NUMBER}
          """
          sh """
+         git add jmeter.log
          mv jmeter.log PerformanceTest/TestResult/Result_html_${BUILD_NUMBER}/jmeter.log
          """
          sh """
-         git add jmeter.log && git commit -m 'Publish Jmeter result' && git push --set-upstream origin master
+         git commit -m 'Publish Jmeter result' && git push --set-upstream origin master
          """
          }
          }
@@ -50,6 +53,9 @@ pipeline {
        always {
        perfReport 'PerformanceTest/TestResult/Result_${BUILD_NUMBER}.jtl'
        }
+         }
+       
+
        }
        }
        }
