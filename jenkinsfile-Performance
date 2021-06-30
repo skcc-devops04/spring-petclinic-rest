@@ -27,7 +27,7 @@ pipeline {
            //
            // git checkout origin/master
          sh """
-          git remote set-url --add origin https://github.com/skcc-devops04/spring-petclinic-rest.git
+          git config remote.origin.url https://${GIT_USER}:${GIT_PWD}@github.com/skcc-devops04/spring-petclinic-rest.git
           git config --global user.name 'skcc.devops04'
           git config --global user.email 'skcc.devops04@sk.com'
           git config --global credential.helper cache
