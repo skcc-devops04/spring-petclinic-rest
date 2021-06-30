@@ -22,7 +22,7 @@ pipeline {
      stage('PerforfmanceTest') {
        steps {
          //git url: 'https://github.com/skcc-devops04/spring-petclinic-rest.git', credentialsId: 'skcc.devops04', branch: 'master'
-         withCredentials([usernamePassword(credentialsId: 'skcc-devops04-github', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PWD')]) {
+         withCredentials([usernamePassword(credentialsId: 'skcc-devops04', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PWD')]) {
                   container('jmeter') {
            //
            // git checkout origin/master
