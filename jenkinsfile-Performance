@@ -22,11 +22,9 @@ pipeline {
      stage('PerforfmanceTest') {
        steps {
          container('jmeter') {
+           git url: 'https://github.com/skcc-devops04/spring-petclinic-rest.git', credentialsId: 'skcc.devops04', branch: 'master'
+           // git checkout origin/master
          sh """
-         git url: 'https://github.com/skcc-devops04/spring-petclinic-rest.git',
-            credentialsId: 'skcc.devops04',
-            branch: 'master'
-         git checkout origin/master
           git config --global user.name 'skcc.devops04'
           git config --global user.email 'skcc.devops04@sk.com'
           git config --global credential.helper cache
