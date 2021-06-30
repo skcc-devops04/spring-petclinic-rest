@@ -27,7 +27,7 @@ pipeline {
             sh """
                git checkout origin/master
                git config remote.origin.url https://${GIT_USER}:${GIT_PWD}@github.com/skcc-devops04/spring-petclinic-rest.git
-               git config --global user.name 'skcc.devops04'
+               git config --global user.name 'skcc-devops04'
                git config --global user.email 'skcc.devops04@sk.com'
                git config --global credential.helper cache
                git config --global push.default simple
@@ -40,18 +40,19 @@ pipeline {
                -e -o PerformanceTest/TestResult/Result_html_${BUILD_NUMBER}
             """
          
-            //sh """
-            //   mv jmeter.log PerformanceTest/TestResult/Result_html_${BUILD_NUMBER}/jmeter.log
-            //   git add . && git commit -m 'Publish Jmeter result' && git push origin HEAD:master
-            //"""
+            sh """
+               mv jmeter.log PerformanceTest/TestResult/Result_html_${BUILD_NUMBER}/jmeter.log
+               git add . && git commit -m 'Publish Jmeter result' && git push origin HEAD:master
+            """
           }
         }
-         
-        //post {
-        //  always {
-        //    perfReport 'PerformanceTest/TestResult/Result_${BUILD_NUMBER}.jtl'
-        //  }
-        //}
+
+      }
+               
+      post {
+        always {
+           perfReport 'PerformanceTest/TestResult/Result_${BUILD_NUMBER}.jtl'
+        }
       }
     }
   }
