@@ -151,7 +151,7 @@ pipeline {
           sh """
             npm install -g newman
             npm install -g newman-reporter-html
-          //  npm install -g newman-reporter-htmlextra
+            npm install -g newman-reporter-htmlextra
           """
           sh """
             newman run api_test.json \
