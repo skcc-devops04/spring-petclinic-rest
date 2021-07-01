@@ -20,7 +20,7 @@ pipeline {
 
   stages {
 
-   stage('Build') {
+   stage('Source Checout & Build') {
      steps {
        container('maven') {
          sh 'mvn compile'
@@ -28,7 +28,7 @@ pipeline {
      }
    }
 
-   stage('Unit Test') {
+   stage('Unit/Coverage Test') {
      steps {
        container('maven') {
          sh 'mvn test'
@@ -105,7 +105,7 @@ pipeline {
       }
     }
 
-    stage('PerforfmanceTest') {
+    stage('Perforfmance Test') {
       steps {
         //git url: 'https://github.com/skcc-devops04/spring-petclinic-rest.git', credentialsId: 'skcc.devops04', branch: 'master'
         withCredentials([usernamePassword(credentialsId: 'skcc.devops04', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PWD')]) {
