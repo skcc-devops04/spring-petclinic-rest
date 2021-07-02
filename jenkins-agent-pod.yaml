@@ -37,6 +37,11 @@ spec:
     command:
     - cat
     tty: true
+  - name: argocd
+    image: payfit/argocd-cli:latest
+    command:
+    - cat
+    tty: true
   serviceAccountName: petclinic-sa
   securityContext:
     runAsUser: 0
