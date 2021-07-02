@@ -100,7 +100,7 @@ pipeline {
             credentialsId: 'skcc.devops04',
             branch: 'main'
         sh """
-           sed -i 's/tag:.*/tag: ${IMAGE_TAG}/g' values.yaml
+           sed -i 's/tag:.*/tag: "${IMAGE_TAG}"/g' values.yaml
            git add values.yaml
            git commit -m 'Update Docker image tag: ${IMAGE_TAG}'
            git push origin main
