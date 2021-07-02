@@ -16,7 +16,7 @@ pipeline {
     APP_URL = 'http://a0c861d17c59b414c8f5302355144b84-d01559613ddf2c4c.elb.ap-northeast-2.amazonaws.com'
     APP_PORT = 80
     PerfURL='a0c861d17c59b414c8f5302355144b84-d01559613ddf2c4c.elb.ap-northeast-2.amazonaws.com'
-    ArgoURL='aa9253ce144b64dca839f6ac0e1ba557-1293852278.ap-northeast-2.elb.amazonaws.com'
+    ArgoURL='aefb25155a7da4a09b683b841fcc4458-1958687212.ap-northeast-2.elb.amazonaws.com'
     argocdAppPrefix='petclinic-argocd-helm'
     appWaitTimeout = 600
   }
@@ -110,10 +110,10 @@ pipeline {
 
     stage('Argo') {
       steps {
-        withCredentials([string(credentialsId: 'argo_skccdevops03', variable: 'ARGOCD_AUTH_PWD')]) {
+        withCredentials([usernamePassword(credentialsId: 'argocli_crendential', usernameVariable: 'ARGOCD_USER', passwordVariable: 'ARGOCD_AUTH_PWD')]) {
           container('argocd') {
             sh """
-               yes | argocd login --insecure ${ArgoURL} --username admin --password ${ARGOCD_AUTH_PWD}
+               yes | argocd login --insecure ${ArgoURL} --username ${ARGOCD_USER} --password ${ARGOCD_AUTH_PWD}
                argocd app sync ${argocdAppPrefix}
                argocd app wait ${argocdAppPrefix} --timeout ${appWaitTimeout}
             """
