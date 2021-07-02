@@ -108,7 +108,7 @@ pipeline {
       }
     }
 
-    stage('Argo') {
+    stage('ArgoCD Sync & Waiting') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'argocli_crendential', usernameVariable: 'ARGOCD_USER', passwordVariable: 'ARGOCD_AUTH_PWD')]) {
           container('argocd') {
