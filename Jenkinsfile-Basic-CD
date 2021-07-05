@@ -179,6 +179,10 @@ pipeline {
                    --reporter-junit-export 'target/newman_petclinic_junit.xml' \
                    --reporter-html-export 'target/newman_petclinic_html.html'
           """
+          sh """
+             mv target/newman_petclinic_html.html ApiTest/TestResult/Result_html_${BUILD_NUMBER}/newman_petclinic_html.html
+             git add . && git commit -m 'Publish Postman result' && git push origin HEAD:master
+          """
           //sh """
           //  newman run api_test.json \
           //         --reporters htmlextra \
