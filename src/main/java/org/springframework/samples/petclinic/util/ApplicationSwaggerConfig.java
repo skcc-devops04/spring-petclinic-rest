@@ -55,7 +55,7 @@ public class ApplicationSwaggerConfig {
 
    private ApiInfo getApiInfo() {
 	   return new ApiInfo(
-		"REST Petclinic backend Api Documentation - 20210705",
+		"담당님 화이팅!",
 		"This is REST API documentation of the Spring Petclinic backend. If authentication is enabled, when calling the APIs use admin/admin",
 		"1.0",
 		"Petclinic backend terms of service",
