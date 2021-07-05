@@ -164,30 +164,32 @@ pipeline {
 //newman run ${WORKSPACE}/api_test.json \
     stage('API Test') {
       steps {
-        container('newman') {
-          //git url: 'https://github.com/skcc-devops04/spring-petclinic-rest.git', credentialsId: 'skcc.devops04', branch: 'master'
+        withCredentials([usernamePassword(credentialsId: 'skcc.devops04', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PWD')]) {
+          container('newman') {
+            //git url: 'https://github.com/skcc-devops04/spring-petclinic-rest.git', credentialsId: 'skcc.devops04', branch: 'master'
 
-          sh """
-            npm install -g newman
-            npm install -g newman-reporter-html
-            npm install -g newman-reporter-htmlextra
-          """
-          sh """
-            newman run api_test.json \
-                   --reporters cli,junit,html \
-                   --env-var 'baseUrl=${APP_URL}/petclinic' --env-var 'petTypeId="7"' \
-                   --reporter-junit-export 'target/newman_petclinic_junit.xml' \
-                   --reporter-html-export 'target/newman_petclinic_html.html'
-          """
-          sh """
-             mv target/newman_petclinic_html.html ApiTest/TestResult/Result_html_${BUILD_NUMBER}/newman_petclinic_html.html
-             git add . && git commit -m 'Publish Postman result' && git push origin HEAD:master
-          """
-          //sh """
-          //  newman run api_test.json \
-          //         --reporters htmlextra \
-          //         --env-var 'baseUrl=${APP_URL}/petclinic' --env-var 'petTypeId=""'
-          //"""
+            sh """
+               npm install -g newman
+               npm install -g newman-reporter-html
+               npm install -g newman-reporter-htmlextra
+            """
+            sh """
+               newman run api_test.json \
+                      --reporters cli,junit,html \
+                      --env-var 'baseUrl=${APP_URL}/petclinic' --env-var 'petTypeId="7"' \
+                      --reporter-junit-export 'target/newman_petclinic_junit.xml' \
+                      --reporter-html-export 'target/newman_petclinic_html.html'
+            """
+            sh """
+               mv target/newman_petclinic_html.html ApiTest/TestResult/Result_html_${BUILD_NUMBER}/newman_petclinic_html.html
+               git add . && git commit -m 'Publish Postman result' && git push origin HEAD:master
+            """
+            //sh """
+            //  newman run api_test.json \
+            //         --reporters htmlextra \
+            //         --env-var 'baseUrl=${APP_URL}/petclinic' --env-var 'petTypeId=""'
+            //"""
+          }
         }
       }
       post {
