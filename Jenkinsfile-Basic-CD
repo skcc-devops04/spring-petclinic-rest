@@ -117,6 +117,7 @@ pipeline {
                argocd app sync ${argocdAppPrefix}
                argocd app wait ${argocdAppPrefix} --timeout ${appWaitTimeout}
                argocd logout ${ArgoURL}
+               sleep 10
             """
           }
         }
