@@ -55,7 +55,7 @@ public class ApplicationSwaggerConfig {
 
    private ApiInfo getApiInfo() {
 	   return new ApiInfo(
-		"Petclinic back-end system",
+		"Petclinic back-end system - DEMO",
 		"customized by SK DevOps Unit",
 		"1.0",
 		"Petclinic backend terms of service",
